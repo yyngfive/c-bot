@@ -19,18 +19,25 @@ class MyClient(botpy.Client):
                             EmbedField(name='/hello: 查看欢迎消息'),
                             EmbedField(name='help: 查看帮助'),
                             EmbedField(name='info: 查看个人信息'),
-                            EmbedField(name='luck: 0-100随机数')])
+                            EmbedField(name='luck: 0-100随机数'),
+                            EmbedField(name='members: 查询频道成员（目前只支持前100人）')])
             await message.reply(content = f'欢迎使用 {self.robot.name} ,你可以使用@我+如下指令来使用')
             await self.api.post_message(message.channel_id,embed=embed)
             _log.info(f'{message.author.id}调用了help指令')
         elif 'info' in message.content:
             info = await self.api.get_guild_member(guild_id=message.guild_id,user_id=message.author.id)
-            await message.reply(content=f'你是{info["user"]["username"]}，你加入频道的时间是{info["joined_at"]}')
-            await self.api.post_message(message.channel_id,image=info['user']['avatar'],msg_id=message.id)
+            await message.reply(content=f'你是{info["user"]["username"]}，你加入频道的时间是{info["joined_at"]}',image=info['user']['avatar'])
             _log.info(f'{message.author.id}查询了个人信息')
         elif 'luck' in message.content:
             luck = random.randint(0,100)
             await message.reply(content = f'<@!{message.author.id}>今日运势：{luck}')
+        elif 'members' in message.content:
+            members = await self.api.get_guild_members(message.guild_id,limit=100)
+            names = []
+            for member in members:
+                names.append(member['user']['username'])
+            await message.reply(content = '频道成员有: \n'+'\n'.join(names))
+            _log.info(f'{message.author.id}查询了频道成员')
         else:
             await message.reply(content = f'无此指令:{message.content}，请使用help查看帮助')
             _log.info(f'无效的指令:{message.content}')
