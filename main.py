@@ -1,6 +1,8 @@
 import asyncio
 from random import randint
 import yaml
+import aiohttp
+import database as db
 from amiyabot import AmiyaBot, Message, Chain
 # 此版本中日志功能可能存在中文编码问题，需在log.py手动添加utf-8
 with open('./config.yml') as f:
@@ -37,5 +39,12 @@ async def me(data: Message):
 @bot.on_message(keywords='/luck')
 async def luck(data: Message):
     return Chain(data).text(f'你的当前运势：{randint(0,100)}')
+
+@bot.on_message(keywords='/morning')
+async def morning(data: Message):
+    morning,created = db.Morning.get_or_create(user = str(data.user_id))
+    morning.checkin = morning.checkin + 1
+    morning.save()
+    return Chain(data).text(f'签到成功！已累计签到{morning.checkin}天')
 
 asyncio.run(bot.start())
