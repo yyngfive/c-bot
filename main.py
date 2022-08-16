@@ -48,14 +48,15 @@ async def luck(data: Message):
 @bot.on_message(keywords=config_func.morning.key)
 async def morning(data: Message):
     morning, created = db.Morning.get_or_create(user=str(data.user_id))
-    if morning.checkin_date == local.today():
-        morning.checkin = morning.checkin + 1
-        morning.save()
-        return Chain(data).text(f'签到成功！已累计签到{morning.checkin}天')
+
+    if str(morning.checkin_date) == local.today():
+        return Chain(data).text(f'重复签到！已累计签到{morning.checkin}天')
     else:
+        morning.checkin = morning.checkin + 1
         morning.checkin_date = local.today()
         morning.save()
-        return Chain(data).text(f'重复签到！已累计签到{morning.checkin}天')
+        return Chain(data).text(f'签到成功！已累计签到{morning.checkin}天')
+        
 
 try:
     asyncio.run(bot.start())

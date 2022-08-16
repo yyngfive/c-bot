@@ -1,4 +1,4 @@
-config.yml
-log/
+log
 __pycache__
 cbot.sqlite
+config.yml

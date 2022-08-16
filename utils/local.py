@@ -3,7 +3,7 @@ import pytz
 from utils import config
 
 
-def today(fmt = '%Y-%m-%d') -> str:
+def today(fmt='%Y-%m-%d') -> str:
     conf = config.read_config('./config/config.yml')
     timezone = conf.timezone
     local_date = datetime.now(pytz.timezone(timezone))
