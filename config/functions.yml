@@ -1,14 +1,21 @@
 hello:
   desc: 打招呼
+  key: /hello
 
 help:
   desc: 查看帮助信息
+  key: /help
 
 me:
   desc: 查看自己信息
+  key: /me
 
 luck:
   desc: 生成0~100随机数
+  key: /luck
 
 morning:
   desc: 每日签到
+  key: 
+    - /morning
+    - /checkin

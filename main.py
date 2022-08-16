@@ -1,14 +1,10 @@
 import asyncio
 from random import randint
-import yaml
 import database.database as db
 from amiyabot import AmiyaBot, Message, Chain
-from munch import DefaultMunch
-import utils
+from utils import local,config
 
-with open('./config/config.yml', encoding='utf-8') as f:
-    config = yaml.safe_load(f)
-    config_bot = DefaultMunch.fromDict(config)
+config_bot = config.read_config('./config/config.yml')
 appid = config_bot.login.appid
 token = config_bot.login.token
 bot = AmiyaBot(appid=appid, token=token, private=True)
@@ -49,11 +45,16 @@ async def luck(data: Message):
 @bot.on_message(keywords='/morning')
 async def morning(data: Message):
     morning, created = db.Morning.get_or_create(user=str(data.user_id))
-    morning.checkin = morning.checkin + 1
-    morning.save()
-    return Chain(data).text(f'签到成功！已累计签到{morning.checkin}天')
+    if morning.checkin_date == local.today():
+        morning.checkin = morning.checkin + 1
+        morning.save()
+        return Chain(data).text(f'签到成功！已累计签到{morning.checkin}天')
+    else:
+        morning.checkin_date = local.today()
+        morning.save()
+        return Chain(data).text(f'重复签到！已累计签到{morning.checkin}天')
 
 try:
     asyncio.run(bot.start())
 except KeyboardInterrupt:
-    ...
+    print('c-bot已退出')

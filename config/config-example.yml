@@ -1,4 +1,8 @@
 # change the filename into config.yml
-bot:
+login:
   appid: your_appid
   token: your_token
+
+prefix:
+  - cbot
+  - c-bot
