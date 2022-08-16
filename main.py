@@ -2,7 +2,7 @@ import asyncio
 from random import randint
 import database.database as db
 from amiyabot import AmiyaBot, Message, Chain
-from utils import local,config
+from utils import local, config
 
 config_bot = config.read_config('./config/config.yml')
 config_func = config.read_config('./config/functions.yml')
@@ -29,7 +29,6 @@ async def help(data: Message):
             help_info.append(fun.key + ': ' + fun.desc)
 
     return Chain(data, at=False).text('\n'.join(help_info))
-
 
 
 @bot.on_message(keywords=config_func.me.key)
