@@ -6,3 +6,5 @@ login:
 prefix:
   - cbot
   - c-bot
+
+timezone: Asia/Shanghai
