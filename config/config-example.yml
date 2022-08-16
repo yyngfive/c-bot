@@ -1,3 +1,4 @@
+# change the filename into config.yml
 bot:
   appid: your_appid
   token: your_token

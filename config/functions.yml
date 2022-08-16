@@ -1,0 +1,14 @@
+hello:
+  desc: 打招呼
+
+help:
+  desc: 查看帮助信息
+
+me:
+  desc: 查看自己信息
+
+luck:
+  desc: 生成0~100随机数
+
+morning:
+  desc: 每日签到
