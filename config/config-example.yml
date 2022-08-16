@@ -1,0 +1,10 @@
+# change the filename into config.yml
+login:
+  appid: your_appid
+  token: your_token
+
+prefix:
+  - cbot
+  - c-bot
+
+timezone: Asia/Shanghai
