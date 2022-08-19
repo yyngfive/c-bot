@@ -56,6 +56,10 @@ async def morning(data: Message):
         morning.checkin_date = local.today()
         morning.save()
         return Chain(data).text(f'签到成功！已累计签到{morning.checkin}天')
+
+#TODO 添加一系列针对运行的树莓派服务器的功能，格式为"/rpi <command>"，
+### 一些command：
+## info：获取温度、CPU使用率、内存使用率等信息
         
 
 try:
