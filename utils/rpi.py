@@ -45,7 +45,7 @@ class System:
         info['total'] = str(total) + 'MB'
         info['used'] = str(used) + 'MB'
         info['free'] = str(free) + 'MB'
-        info['perc'] = str(round(used/total, 3) * 100) + '%'
+        info['perc'] = str(round(used/total*100, 1)) + '%'
 
         return DefaultMunch.fromDict(info)
 
