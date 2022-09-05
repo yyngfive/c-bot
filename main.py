@@ -3,6 +3,7 @@ from random import randint
 import database.database as db
 from amiyabot import AmiyaBot, Message, Chain
 from utils import local, config
+from utils.rpi import System
 
 config_bot = config.read_config('./config/config.yml')
 config_func = config.read_config('./config/functions.yml')
@@ -56,7 +57,18 @@ async def morning(data: Message):
         morning.checkin_date = local.today()
         morning.save()
         return Chain(data).text(f'签到成功！已累计签到{morning.checkin}天')
-        
+
+#TODO 添加一系列针对运行的树莓派服务器的功能，格式为"/rpi <command>"，
+### 一些command：
+## info：获取温度、CPU使用率、内存使用率等信息
+@bot.on_message(keywords=config_func.rpi.key)
+async def rpi(data: Message):
+    if System.is_RPi():     
+        CPU = System.get_CPU()
+        RAM = System.get_RAM()
+        ROM = System.get_ROM()
+        return Chain(data).text(f'CPU温度：{CPU.temp}，使用率：{CPU.usage}；').text(f'内存占用{RAM.perc}；').text(f'SD卡剩余{ROM.free}')
+    return Chain(data).text('未在树莓派上运行')
 
 try:
     asyncio.run(bot.start())
