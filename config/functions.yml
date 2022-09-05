@@ -23,3 +23,7 @@ morning:
 rpi:
   desc: 查看树莓派信息
   key: /rpi
+  opt:
+    - cpu
+    - ram
+    - rom

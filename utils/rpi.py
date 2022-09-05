@@ -6,7 +6,7 @@ import platform
 class System:
 
     @staticmethod
-    def is_RPi()->bool:
+    def is_RPi() -> bool:
         if platform.system() != 'Linux':
             return False
         with os.popen('uname -a') as p:
@@ -21,10 +21,11 @@ class System:
         temp = os.popen('vcgencmd measure_temp').readline()
         temp = temp.replace("temp=", "").replace("'C\n", "")
         info = dict()
-        info['temp'] = temp
+        info['temp'] = temp + '℃'
 
-        usage = str(os.popen("top -n1 | awk '/Cpu\(s\):/ {print $2}'").readline().strip())
-        info['usage'] = usage
+        usage = str(
+            os.popen("top -n1 | awk '/Cpu\(s\):/ {print $2}'").readline().strip())
+        info['usage'] = usage + '%'
 
         return DefaultMunch.fromDict(info)
 
@@ -34,17 +35,17 @@ class System:
         with os.popen('free') as p:
             line = p.readlines()[1]
             usage = line.split()[1:4]
-        
+
         info = dict()
 
         total = round(int(usage[0]) / 1000, 1)
         used = round(int(usage[1]) / 1000, 1)
         free = round(int(usage[2]) / 1000, 1)
 
-        info['total'] = total
-        info['used'] = used
-        info['free'] = free
-        info['perc'] = round(used/total,2)
+        info['total'] = str(total) + 'MB'
+        info['used'] = str(used) + 'MB'
+        info['free'] = str(free) + 'MB'
+        info['perc'] = str(round(used/total, 3) * 100) + '%'
 
         return DefaultMunch.fromDict(info)
 
@@ -54,7 +55,7 @@ class System:
         with os.popen("df -h /") as p:
             line = p.readlines()[1]
             usage = line.split()[1:5]
-       
+
         info = dict()
 
         total = usage[0]
@@ -63,7 +64,7 @@ class System:
 
         info['total'] = total
         info['used'] = used
-        info['free'] = str(round(float(total[:-1])-float(used[:-1]),1))+'G'
+        info['free'] = str(round(float(total[:-1])-float(used[:-1]), 1))+'G'
         info['perc'] = perc
 
         return DefaultMunch.fromDict(info)
